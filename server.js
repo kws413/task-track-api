@@ -48,6 +48,15 @@ app.post('/projects', (req, res) => {
     res.status(201).json(project);
 });
 
+app.delete('/projects/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const projectID = projects.findIndex(target => target.id === id);
+    console.log(`User requested to delete project with ID: ${id}`);
+    projects.splice(projectID, 1);
+    console.log(projects);
+    res.status(200);
+});
+
 app.listen(PORT, () => {   
     console.log(`Server running on http://localhost:${PORT}`);
 });

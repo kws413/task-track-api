@@ -31,6 +31,16 @@ app.get('/projects/:id', (req, res) => {
     res.status(200).json(project);
 });
 
+app.put('/projects/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const { name, description } = req.body;
+    const project = projects.find(target => target.id === id);
+    console.log(`User requested to update project with ID: ${id}`);
+    project.description = description;
+    project.name = name;
+    res.status(200).json(project);
+});
+
 app.post('/projects', (req, res) => {
     const { name, description } = req.body;
     const project = { id: nextId++, name, description };

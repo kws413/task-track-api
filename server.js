@@ -2,7 +2,12 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-let projects = [];
+let projects = [
+    { 'name': 'DigiForms',
+        'id': 1,
+        'description': 'Digital Forms'
+    }
+];
 let nextId = 1;
 
 app.use(express.json());
@@ -17,6 +22,13 @@ app.get('/health', (req, res) => {
 
 app.get('/projects', (req, res) => {
     res.json(projects);
+});
+
+app.get('/projects/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const project = projects.find(target => target.id === id);
+    console.log(`User requested project with ID: ${id}`);
+    res.status(200).json(project);
 });
 
 app.post('/projects', (req, res) => {

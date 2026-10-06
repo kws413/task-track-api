@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
-    res.json({ status: 'OK' });
+    res.status(200).json({ status: 'OK' });
 });
 
 app.get('/projects', (req, res) => {
@@ -57,6 +57,11 @@ app.delete('/projects/:id', (req, res) => {
     res.status(200);
 });
 
+
+module.exports = app;
+
+/*
 app.listen(PORT, () => {   
     console.log(`Server running on http://localhost:${PORT}`);
 });
+*/

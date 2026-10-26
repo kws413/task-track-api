@@ -1,14 +1,19 @@
 const express = require('express');
+const uuid = require('crypto');
 const app = express();
 const PORT = 3000;
 
 let projects = [
-    { 'name': 'DigiForms',
-        'id': 1,
-        'description': 'Digital Forms'
+    { 
+        "name": "DigiForms",
+        "id": "1",
+        "description": "Digital Forms"
     }
 ];
-let nextId = 1;
+
+function createProjectId() {
+    return crypto.randomUUID();
+};
 
 app.use(express.json());
 
@@ -21,18 +26,19 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/projects', (req, res) => {
-    res.json(projects);
+    console.log("getting all projects")
+    res.status(200).json(projects);
 });
 
 app.get('/projects/:id', (req, res) => {
-    const id = Number(req.params.id);
+    const id = String(req.params.id);
     const project = projects.find(target => target.id === id);
     console.log(`User requested project with ID: ${id}`);
     res.status(200).json(project);
 });
 
 app.put('/projects/:id', (req, res) => {
-    const id = Number(req.params.id);
+    const id = String(req.params.id);
     const { name, description } = req.body;
     const project = projects.find(target => target.id === id);
     console.log(`User requested to update project with ID: ${id}`);
@@ -42,21 +48,21 @@ app.put('/projects/:id', (req, res) => {
 });
 
 app.post('/projects', (req, res) => {
+    console.log(req.body);
     const { name, description } = req.body;
-    const project = { id: nextId++, name, description };
+    const project = { id: createProjectId(), name, description };
     projects.push(project);
     res.status(201).json(project);
 });
 
 app.delete('/projects/:id', (req, res) => {
-    const id = Number(req.params.id);
+    const id = String(req.params.id);
     const projectID = projects.findIndex(target => target.id === id);
     console.log(`User requested to delete project with ID: ${id}`);
     projects.splice(projectID, 1);
     console.log(projects);
     res.status(200);
 });
-
 
 module.exports = app;
 
